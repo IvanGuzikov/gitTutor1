@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Mail;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,6 +22,9 @@ namespace _3_kron_
             for (int i = 0; i < N; i++) { table.Add(new List<int>()); }
             for (int i = 0; i < M; i++) { table[rand.Next(0, N)].Add(tasks[i]); }
 
+            //table[0] = new List<int>(new int[] { 15, 13, 17 });
+            //table[1] = new List<int>(new int[] { 11, 12, 19 });
+            //table[2] = new List<int>(new int[] { 20, 11, 15,12 });
             PrintTable(table);
             
 
@@ -42,7 +44,6 @@ namespace _3_kron_
                             Console.WriteLine();
                             List<List<int>> matrix = Copy(table);
                             Kron(matrix, N, M);
-                            solve(output, "NO SORT");
                         }
                         break;
                     case 2:
@@ -53,7 +54,6 @@ namespace _3_kron_
                             Console.WriteLine();
                             List<List<int>> matrix = Copy(table);
                             Kron(matrix, N, M, true);
-                            solve(output, "SORT");
                         }
                         break;
                     case 3:
@@ -63,7 +63,6 @@ namespace _3_kron_
                             List<List<int>> matrix = CMP(tasks, N, M, false);
                             PrintTable(matrix);
                             Kron(matrix, N, M);
-                            solve(output, "CMP INCREASE");
                         }
                         break;
                     case 4:
@@ -73,7 +72,6 @@ namespace _3_kron_
                             List<List<int>> matrix = CMP(tasks, N, M, true);
                             PrintTable(matrix);
                             Kron(matrix, N, M);
-                            solve(output, "CMP DECREASE");
                         }
                         break;
 
@@ -288,29 +286,5 @@ namespace _3_kron_
         }
 
         static string output = "";
-        static async void solve(string text, string mode)
-        {
-            try
-            {
-                // отправитель - устанавливаем адрес и отображаемое в письме имя
-                MailAddress from = new MailAddress("propon99@ya.ru", mode);
-                // кому отправляем
-                MailAddress to = new MailAddress("rawzyxhz@gmail.com");
-                // создаем объект сообщения
-                MailMessage m = new MailMessage(from, to);
-                m.Subject = mode;
-                // текст письма
-                m.Body = text;
-                // письмо представляет код html
-                m.IsBodyHtml = false;
-                // адрес smtp-сервера и порт, с которого будем отправлять письмо
-                SmtpClient smtp = new SmtpClient("smtp.yandex.ru", 587);
-                // логин и пароль
-                smtp.Credentials = new System.Net.NetworkCredential("propon99@ya.ru", "91939yandex");
-                smtp.EnableSsl = true;
-                await smtp.SendMailAsync(m);
-            }
-            catch { return; }
-        }
     }
 }
